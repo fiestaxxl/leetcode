@@ -50,21 +50,23 @@ void addToList(List* list, char* combination, int size){
 }
 
 void backtrack(char* current, int num_opened, int num_closed, int total_pairs, List* list){
-    if (total_pairs == num_opened && total_pairs == num_closed){
+    if (total_pairs == num_opened){
+        while (num_closed<total_pairs){
+            current[num_opened+num_closed] = ')';
+            num_closed++;
+        }
         addToList(list, current, total_pairs*2);
         return;
     }
+
+    current[num_opened+num_closed] = '(';
+    backtrack(current, num_opened+1, num_closed, total_pairs, list);
+    
 
     if (num_opened>num_closed){
         current[num_opened+num_closed] = ')';
         backtrack(current, num_opened, num_closed+1, total_pairs, list);
     }
-
-    if (num_opened<total_pairs){
-        current[num_opened+num_closed] = '(';
-        backtrack(current, num_opened+1, num_closed, total_pairs, list);
-    }
-    return;
 }
 
 char** generateParenthesis(int n, int* returnSize) {
